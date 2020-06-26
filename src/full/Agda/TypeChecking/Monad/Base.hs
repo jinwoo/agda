@@ -3008,8 +3008,11 @@ eActiveBackendName f e = f (envActiveBackendName e) <&> \ x -> e { envActiveBack
 ---------------------------------------------------------------------------
 
 -- | The @Context@ is a stack of 'ContextEntry's.
-type Context      = [ContextEntry]
-type ContextEntry = Dom (Name, Type)
+type Context' t      = [ContextEntry' t]
+type ContextEntry' t = Dom (Name, t)
+
+type Context      = Context' Type
+type ContextEntry = ContextEntry' Type
 
 ---------------------------------------------------------------------------
 -- ** Let bindings

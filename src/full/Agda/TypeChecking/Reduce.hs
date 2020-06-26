@@ -4,6 +4,7 @@
 
 module Agda.TypeChecking.Reduce where
 
+import Control.Applicative ((<|>))
 import Control.Monad.Reader
 
 import Data.Maybe
@@ -271,11 +272,8 @@ instance IsMeta a => IsMeta (LevelAtom' a) where
 
 instance IsMeta TwinT where
   isMeta (SingleT a) = isMeta a
-  isMeta (TwinT{twinLHS=a,twinRHS=b}) = do
-    lhs <- isMeta a
-    case lhs of
-      Just{}  -> return lhs
-      Nothing -> isMeta b
+  isMeta (TwinT{twinLHS=a,twinRHS=b}) =
+    isMeta a <|> isMeta b
 
 instance IsMeta CompareAs where
   isMeta (AsTermsOf a) = isMeta a

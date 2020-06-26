@@ -191,7 +191,7 @@ compareAs cmp a u v = do
           -- We do not shortcut projection-likes
           if isJust $ isProjection_ (theDef def) then fallback else do
           pol <- getPolarity' cmp f
-          compareElims pol [] (defType def) (Def f []) es es' `orelse` fallback
+          compareElims pol [] (SingleT$ defType def) (Def f []) es es' `orelse` fallback
         _               -> fallback
   where
     assign :: CompareDirection -> MetaId -> Elims -> Term -> m ()
@@ -1491,7 +1491,7 @@ equalLevel a b = do
           -- there is only a potential choice when k == l
           | k == l -> do
               lvl <- levelType
-              equalAtom (AsTermsOf lvl) (MetaV x as') (MetaV y bs')
+              equalAtom (AsTermsOf$ SingleT$ lvl) (MetaV x as') (MetaV y bs')
         (SinglePlus (Plus k (MetaLevel x as')) :| [] , _)
           | Just b' <- subLevel k b -> meta x as' b'
         (_ , SinglePlus (Plus l (MetaLevel y bs')) :| [])
